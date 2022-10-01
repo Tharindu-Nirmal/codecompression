@@ -25,15 +25,16 @@ auto topKFrequent(std::vector<std::string>& numstrings, size_t k) {
     return top;
 }
 
-int converttoint(std::string instring){
-    //Convert a string with 0s and 1s into an int array 32 bits
+auto StrToIntVec(std::string instring){
+    //convert an input string to a vector of integers
+    std:: vector<int> invec ;
+    for (int i=0; i<32; i++){
+        invec.push_back(instring[i] - '0') ;
+    }
+    return invec;
+}
 
-    return 0;
-} 
 
-
-
-// Test code
 int main() 
 {
 // Input file stream object to 
@@ -43,8 +44,7 @@ std::ifstream in("original.txt");
 std::queue<std::string> stringque;
 
 // Reading file.txt completely using END OF FILE eof() method
-while(!in.eof())
-{
+while(!in.eof()){
 std::string text;
     
 // extracting line from file.txt
@@ -52,17 +52,31 @@ std::getline(in, text);
 stringque.push (text); 
 }
 
-//push the queue elemets to a vector
-std::vector<std::string> data;
+//push the queue elemets to a vector<string>
+std::vector<std::string> datastrings;
 // data = { "a","a","b","b","c" };
-while (!stringque.empty())
-{
-    data.push_back(stringque.front());
+while (!stringque.empty()){
+    datastrings.push_back(stringque.front());
     stringque.pop();
 }
 
+//copy the strings to a vector of vector<int>, intialised into vectors of zeros
+int N_strings = datastrings.size();
+std::vector<std::vector<int>> datavector_2d(N_strings, std::vector<int> (32, 0));
+for (int i = 0; i<N_strings; i++){
+    datavector_2d[i] = StrToIntVec(datastrings[i]);
+}
 
-for (const auto& diction : topKFrequent(data, 8))
+
+
+
+//testing
+for (const auto& diction : topKFrequent(datastrings, 8))
     std::cout << "Value: " << diction.first << " \t Count: " << diction.second << '\n';
+
+for (int i =0; i<32; i++){
+    std::cout << datavector_2d[1][i] ;
+}
+
 return 0;
 }
