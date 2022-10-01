@@ -64,7 +64,7 @@ auto decToBinary(int n, int bitsize){
     return result;
 }
 
-std::vector<int> GetCompressionBits(std::vector<int> data_vec, std::vector<int> base_vec){
+std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> base_vec){
     //return the number of bits after compression other than RLE
     std::vector<int> changes_vec = CheckSim(data_vec,base_vec);
     //number of bits, code, ML1/ML, ML2, Mask
@@ -133,8 +133,6 @@ std::vector<int> GetCompressionBits(std::vector<int> data_vec, std::vector<int> 
                 result[1] =6;
             }
         }
-
-
     }
 
     else{
@@ -168,6 +166,8 @@ while (!stringque.empty()){
 
 //copy data strings to a vector of vector<int>, intialised into vectors of zeros
 int N_strings = datastrings.size();
+
+// int N_strings = 3;
 std::vector<std::vector<int>> datavector_2d(N_strings, std::vector<int> (32, 0));
 for (int i = 0; i<N_strings; i++){
     datavector_2d[i] = StrToIntVec(datastrings[i]);
@@ -182,7 +182,61 @@ for (int i = 0; i<8; i++){
     basisvector_2d[i] = StrToIntVec(basis_dic[i].first);
 }
 
+//container for output bits
+std:: vector<int> outbits;
+int next_index = 0;
+while (next_index<N_strings){
+    int repitition = 0;
+    while(datavector_2d[next_index+repitition]==datavector_2d[next_index+repitition+1]){repitition++;}
 
+    int selectedbase = 0;
+    int bitcost = 40;
+    std::vector <int> selectedinfo ;
+    std::vector <int> codedinfo ;
+    for (int i=0;i<8;i++){
+        std::vector <int> info = GetCompressionInfo(datavector_2d[next_index],basisvector_2d[i]);
+        if (info[0]<bitcost){selectedbase=i; selectedinfo=info;}
+    }
+    //info is selected. Code to bits
+    std::vector <int> compresscode = decToBinary(selectedinfo[1],3);
+    codedinfo.insert(codedinfo.end(),compresscode.begin(),compresscode.end());
+
+    std::vector <int> ml1 = decToBinary(selectedinfo[2],5);
+    std::vector <int> ml2 = decToBinary(selectedinfo[3],5);
+    std::vector <int> bm = decToBinary(selectedinfo[4],4);
+    std::vector <int> dicindex = decToBinary(selectedbase,3);
+
+    // switch(selectedinfo[1]){
+    //     //based on the compression format
+    //     case 1:
+    //         codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
+    //         codedinfo.insert(codedinfo.end(),bm.begin(),bm.end());
+    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+    //     case 2:
+    //         codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
+    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+    //     case 3:
+    //         codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
+    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+    //     case 4:
+    //         codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
+    //         codedinfo.insert(codedinfo.end(),ml2.begin(),ml2.end());
+    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+    //     case 5:
+    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+    //     case 6:
+    //         codedinfo.insert(codedinfo.end(),datavector_2d[next_index].begin(),datavector_2d[next_index].end());
+    // }
+
+    if (repitition >0){codedinfo.push_back(0);codedinfo.push_back(0);codedinfo.push_back(0);std::vector <int> codedrepition = decToBinary(repitition-1,2);
+    codedinfo.insert(codedinfo.end(),codedrepition.begin(),codedrepition.end());
+    }
+
+    next_index = next_index+repitition+1;
+    for (int i =0; i<codedinfo.size(); i++){std::cout << codedinfo[i];}
+    std::cout << '\n';
+
+}
 
 //testing
 // for (const auto& diction : topKFrequent(datastrings, 8))
@@ -191,6 +245,5 @@ for (int i = 0; i<8; i++){
 // for (int i =0; i<32; i++){
 //     std::cout << basisvector_2d[6][i] ;
 // }
-if(-1){std::cout<<11;}
 return 0;
 }
