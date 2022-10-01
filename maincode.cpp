@@ -204,48 +204,49 @@ while (next_index<N_strings){
         if (info[0]<bitcost){selectedbase=i; selectedinfo=info;bitcost=info[0];}
     }
     // info is selected. Code to bits
-    std::cout << selectedinfo[1];
+    // std::cout << selectedinfo[1];
 
     std::vector <int> compresscode;
-    // compresscode = decToBinary(selectedinfo[1],3);
+    compresscode = decToBinary(selectedinfo[1],3);
     // std::cout << compresscode[0]<<compresscode[1]<<compresscode[2];
 
-    // codedinfo.insert(codedinfo.end(),compresscode.begin(),compresscode.end());
+    codedinfo.insert(codedinfo.end(),compresscode.begin(),compresscode.end());
 
-    // std::vector <int> ml1 = decToBinary(selectedinfo[2],5);
-    // std::vector <int> ml2 = decToBinary(selectedinfo[3],5);
-    // std::vector <int> bm = decToBinary(selectedinfo[4],4);
-    // std::vector <int> dicindex = decToBinary(selectedbase,3);
+    std::vector <int> ml1 = decToBinary(selectedinfo[2],5);
+    std::vector <int> ml2 = decToBinary(selectedinfo[3],5);
+    std::vector <int> bm = decToBinary(selectedinfo[4],4);
+    std::vector <int> dicindex = decToBinary(selectedbase,3);
 
-    // switch(selectedinfo[1]){
-    //     //based on the compression format
-    //     case 1:
-    //         codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
-    //         codedinfo.insert(codedinfo.end(),bm.begin(),bm.end());
-    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
-    //     case 2:
-    //         codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
-    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
-    //     case 3:
-    //         codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
-    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
-    //     case 4:
-    //         codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
-    //         codedinfo.insert(codedinfo.end(),ml2.begin(),ml2.end());
-    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
-    //     case 5:
-    //         codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
-    //     case 6:
-    //         codedinfo.insert(codedinfo.end(),datavector_2d[next_index].begin(),datavector_2d[next_index].end());
-    // }
+    switch(selectedinfo[1]){
+        //based on the compression format
+        case 1:
+            codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
+            codedinfo.insert(codedinfo.end(),bm.begin(),bm.end());
+            codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+        case 2:
+            codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
+            codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+        case 3:
+            codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
+            codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+        case 4:
+            codedinfo.insert(codedinfo.end(),ml1.begin(),ml1.end());
+            codedinfo.insert(codedinfo.end(),ml2.begin(),ml2.end());
+            codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+        case 5:
+            codedinfo.insert(codedinfo.end(),dicindex.begin(),dicindex.end());
+        case 6:
+            codedinfo.insert(codedinfo.end(),datavector_2d[next_index].begin(),datavector_2d[next_index].end());
+    }
 
-    // if (repitition >0){codedinfo.push_back(0);codedinfo.push_back(0);codedinfo.push_back(0);std::vector <int> codedrepition = decToBinary(repitition-1,2);
-    // codedinfo.insert(codedinfo.end(),codedrepition.begin(),codedrepition.end());
-    // }
+    if (repitition >0){codedinfo.push_back(0);codedinfo.push_back(0);codedinfo.push_back(0);std::vector <int> codedrepition = decToBinary(repitition-1,2);
+    codedinfo.insert(codedinfo.end(),codedrepition.begin(),codedrepition.end());
+    }
 
     next_index = next_index+repitition+1;
+    std::cout << codedinfo.size()-32;
     // for (int i =0; i<codedinfo.size(); i++){std::cout << codedinfo[i];}
-    // std::cout << '\n';
+    std::cout << '\n';
 
 }
 
