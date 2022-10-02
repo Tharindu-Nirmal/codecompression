@@ -166,8 +166,8 @@ while (!stringque.empty()){
 }
 
 //copy data strings to a vector of vector<int>, intialised into vectors of zeros
-int N_strings = datastrings.size();
-// int N_strings = 3;
+// int N_strings = datastrings.size();
+int N_strings = 4;
 
 std::vector<std::vector<int>> datavector_2d(N_strings, std::vector<int> (32, 0));
 for (int i = 0; i<N_strings; i++){
@@ -204,7 +204,7 @@ while (next_index<N_strings){
         if (info[0]<bitcost){selectedbase=i; selectedinfo=info;bitcost=info[0];}
     }
     // info is selected. Code to bits
-    // std::cout << selectedinfo[1];
+    std::cout << selectedinfo[1]<< ' '<<selectedinfo[2]<<' '<<selectedinfo[3]<<' '<<selectedinfo[4]<<' '<<selectedbase<<'\n';
 
     std::vector <int> compresscode;
     compresscode = decToBinary(selectedinfo[1],3);
@@ -244,9 +244,9 @@ while (next_index<N_strings){
     }
 
     next_index = next_index+repitition+1;
-    std::cout << codedinfo.size()-32;
+    // std::cout << codedinfo.size()-32;
     // for (int i =0; i<codedinfo.size(); i++){std::cout << codedinfo[i];}
-    std::cout << '\n';
+    // std::cout << '\n';
 
 }
 
