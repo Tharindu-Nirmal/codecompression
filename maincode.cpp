@@ -176,8 +176,8 @@ while (!stringque.empty()){
 }
 
 //copy data strings to a vector of vector<int>, intialised into vectors of zeros
-// int N_strings = datastrings.size();
-int N_strings = 42;
+int N_strings = datastrings.size();
+// int N_strings = 80;
 
 std::vector<std::vector<int>> datavector_2d(N_strings, std::vector<int> (32, 0));
 for (int i = 0; i<N_strings; i++){
