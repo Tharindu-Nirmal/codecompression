@@ -253,11 +253,39 @@ while (next_index<N_strings){
     }
 
     next_index = next_index+repitition+1;
-    for (int i =0; i<codedinfo.size(); i++){std::cout << codedinfo[i];}
-    std::cout << '\n';
+
+    // cmd debug
+    // for (int i =0; i<codedinfo.size(); i++){std::cout << codedinfo[i];}
+    // std::cout << '\n';
+
+    //store in output vector
+    outbits.insert(outbits.end(),codedinfo.begin(),codedinfo.end());
 
 }
 
+//buffer 1s
+int lastlinexnum = 32- outbits.size()%32;
+for (int i=0;i<lastlinexnum;i++){outbits.push_back(1);}
+
+if( !(outbits.size()%32 ==0)){std::cout<<"error last line 1s"<<'\n';}
+
+//write output
+std::ofstream compressedout("cout.txt");
+
+int lines_num = outbits.size()/32;
+for (int i=0;i<lines_num;i++){
+    for(int j=0; j<32; j++){compressedout<< outbits[i*32 +j];}
+    compressedout<<'\n';
+}
+
+compressedout<< "xxxx"<<'\n';
+
+for (int i=0;i<8;i++){
+    for(int j=0; j<32; j++){compressedout<< basisvector_2d[i][j];}
+    compressedout<<'\n';
+}
+
+compressedout.close();
 
 return 0;
 }
