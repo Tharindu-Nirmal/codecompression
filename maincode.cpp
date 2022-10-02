@@ -71,6 +71,7 @@ std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> 
     std::vector<int> result = {0,0,0,0,0}; 
 
     if (changes_vec.size()){
+        int twobutfar = 1;
         int numchanges = changes_vec.size();
         if (numchanges == 1){
             // 1 bit Mismatch
@@ -82,6 +83,7 @@ std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> 
             int bitdis = changes_vec[1]-changes_vec[0];
             if (bitdis ==1){
                 //2 consec bit MM
+                twobutfar =0;
                 result[0] =8;
                 result[1] =3;
                 result[2] = changes_vec[0];
@@ -89,6 +91,7 @@ std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> 
 
             else if (bitdis<4){
                 //2 apart but within one 4-bit Mask
+                twobutfar = 0;
                 result[0] =12;
                 result[1] =1;
                 result[2] =changes_vec[0];
@@ -119,7 +122,7 @@ std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> 
                 }                
             }
 
-        else if (numchanges==2){
+        else if (numchanges==2 && twobutfar){
                 // 2 bit MM far apart
                 result[0] = 13;
                 result[1] =4;
@@ -167,7 +170,7 @@ while (!stringque.empty()){
 
 //copy data strings to a vector of vector<int>, intialised into vectors of zeros
 // int N_strings = datastrings.size();
-int N_strings = 21;
+int N_strings = 35;
 
 std::vector<std::vector<int>> datavector_2d(N_strings, std::vector<int> (32, 0));
 for (int i = 0; i<N_strings; i++){
@@ -186,10 +189,11 @@ for (int i = 0; i<8; i++){
 //container for output bits
 std:: vector<int> outbits;
 
-int next_index = 0;
+int next_index = 33;
 while (next_index<N_strings){
     int repitition = 0;
     while(datavector_2d[next_index+repitition]==datavector_2d[next_index+repitition+1]){repitition++;}
+    std::cout<<"repition-"<<repitition<<':'<<' '<<"next_index-"<<next_index<<":_";
 
     int selectedbase = 0;
     int bitcost = 40;
