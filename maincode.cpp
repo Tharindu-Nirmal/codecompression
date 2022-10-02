@@ -1,5 +1,3 @@
-//https://stackoverflow.com/questions/66168461/finding-the-top-k-frequent-elements
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -9,6 +7,7 @@
 #include <utility>
 #include <string>
 
+//https://stackoverflow.com/questions/66168461/finding-the-top-k-frequent-elements
 auto topKFrequent(std::vector<std::string>& numstrings, size_t k) {
 
     // Count occurences
@@ -51,7 +50,6 @@ auto decToBinary(int n, int bitsize){
     // counter for binary array
     int i = 0;
     while (n > 0) {
- 
         // storing remainder in binary array
         binaryNum[i] = n % 2;
         n = n / 2;
@@ -151,7 +149,7 @@ std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> 
 
 int main() 
 {
-// Input file stream object to 
+// Input file stream object
 std::ifstream in("original.txt");
 
 // Declare your queue of type std::string to store each line of input
