@@ -67,6 +67,7 @@ auto decToBinary(int n, int bitsize){
 std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> base_vec){
     //return the number of bits after compression other than RLE
     std::vector<int> changes_vec = CheckSim(data_vec,base_vec);
+    // std::cout<<"changesvecsize:_"<<changes_vec.size()<<":_";
     //number of bits, code, ML1/ML, ML2, Mask
     std::vector<int> result = {0,0,0,0,0}; 
 
@@ -122,20 +123,26 @@ std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> 
                 }                
             }
 
-        else if (numchanges==2 && twobutfar){
-                // 2 bit MM far apart
-                result[0] = 13;
-                result[1] =4;
-                result[2] =changes_vec[0];//ML1
-                result[3] =changes_vec[1];//ML2
-            }
-
-        else{
+            else{
                 //no compression
                 result[0] =32;
                 result[1] =6;
             }
         }
+        if (numchanges==2 && twobutfar){
+                // 2 bit MM far apart
+                result[0] = 13;
+                result[1] =4;
+                result[2] =changes_vec[0];//ML1
+                result[3] =changes_vec[1];//ML2
+        }
+
+        // else{
+        //         //no compression
+        //         result[0] =32;
+        //         result[1] =6;
+        //     }
+        // }
     }
 
     else{
@@ -170,7 +177,7 @@ while (!stringque.empty()){
 
 //copy data strings to a vector of vector<int>, intialised into vectors of zeros
 // int N_strings = datastrings.size();
-int N_strings = 35;
+int N_strings = 42;
 
 std::vector<std::vector<int>> datavector_2d(N_strings, std::vector<int> (32, 0));
 for (int i = 0; i<N_strings; i++){
@@ -189,11 +196,11 @@ for (int i = 0; i<8; i++){
 //container for output bits
 std:: vector<int> outbits;
 
-int next_index = 33;
+int next_index = 0;
 while (next_index<N_strings){
     int repitition = 0;
     while(datavector_2d[next_index+repitition]==datavector_2d[next_index+repitition+1]){repitition++;}
-    std::cout<<"repition-"<<repitition<<':'<<' '<<"next_index-"<<next_index<<":_";
+    // std::cout<<"repition-"<<repitition<<':'<<' '<<"next_index-"<<next_index<<":"<<'\n';
 
     int selectedbase = 0;
     int bitcost = 40;
@@ -205,6 +212,8 @@ while (next_index<N_strings){
     for (int i=0;i<8;i++){
         std::vector <int> info;
         info = GetCompressionInfo(datavector_2d[next_index],basisvector_2d[i]);
+        // std::cout << "info:"<<info[0]<< ' '<<info[1]<< ' '<<info[2]<<' '<<info[3]<<' '<<info[4]<<' '<<'\n';
+
         if (info[0]<bitcost){selectedbase=i; selectedinfo=info;bitcost=info[0];}
     }
     // info is selected. Code to bits
