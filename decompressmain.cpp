@@ -80,19 +80,22 @@ int main(){
     std::vector <int> justdecoded;
 
     while (current_index< (numlines*32)){
-        std::cout<<"current_index:"<<current_index<<'\n';
+        // std::cout<<"current_index:"<<current_index<<'\n';
         int compressioncode = binaryToDec(compressedbits,current_index,3);
         int repitition;
         int firstmm;
         int secondmm;
         int baseindex;
+        int lenbuf;
 
         switch(compressioncode){
             case 0:
                 repitition = 1+binaryToDec(compressedbits,current_index+3,2);
                 //deal with repitition.......
                     for (int i=0;i<repitition;i++){
-                        decompfile<<"repitition:"<<repitition;
+                        // decompfile<<"rep:"<<repitition<<'_';
+                        lenbuf = justdecoded.size();
+                        for(int i=lenbuf-32;i<lenbuf;i++){decompfile<<justdecoded[i];}
                         decompfile<<'\n';
                     }
                 current_index = current_index + 5;
