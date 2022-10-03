@@ -40,9 +40,22 @@ auto decToBinary(int n, int bitsize){
 int binaryToDec(std::vector<int> data, int start, int width){
     //convert binary repr in a vector to decimal
     int result = 0;
-    for(int i=0;i<width;i++){ result = result + data[start+i]*pow(2, width-i-1);}
+    for(int i=0;i<width;i++){result = result + data[start+i]*pow(2, width-i-1);}
     return result;
 }
+
+std::vector<int> applyMask(std::vector<int> data, std::vector<int> basevec, int start, int ml1){
+    // return 32bit vector int of the 4bit bitmask applied to basis vector
+    std::vector<int> outdata;
+    int checkbit;
+    for (int i=0;i<32;i++){
+        checkbit = basevec[i];
+        if ((ml1<=i && i< (ml1+4)) && (data[start+3+5+(i-ml1)]==1)){checkbit = (checkbit+1)%2 ;}
+        outdata.push_back(checkbit);
+    }
+    return outdata;
+}
+
 
 int main(){
     std::ifstream in("compressed.txt");
@@ -87,6 +100,7 @@ int main(){
         int secondmm;
         int baseindex;
         int lenbuf;
+        std::vector<int> bitmasked;
 
         switch(compressioncode){
             case 0:
@@ -104,9 +118,15 @@ int main(){
             case 1:
                 //masking
                 firstmm = binaryToDec(compressedbits,current_index+3,5);
-                baseindex = binaryToDec(compressedbits,current_index+8,3);
+                baseindex = binaryToDec(compressedbits,current_index+12,3);
+                bitmasked = applyMask(compressedbits,basisvector_2d[baseindex],current_index,firstmm);
                 //apply bitmask.......
-                decompfile<<"bitmasked decompression";
+                // decompfile<<"bitmasked:";
+                for (int i=0;i<32;i++){
+                    decompfile<<bitmasked[i];
+                    justdecoded.push_back(bitmasked[i]);
+                }
+                
                 current_index = current_index + 15;
                 decompfile<<'\n';
                 break;
