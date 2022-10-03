@@ -79,49 +79,64 @@ int main(){
     int current_line =0;
     std::vector <int> justdecoded;
 
-    while (current_index<< (numlines*32)){
+    while (current_index< (numlines*32)){
+        std::cout<<"current_index:"<<current_index<<'\n';
         int compressioncode = binaryToDec(compressedbits,current_index,3);
+        int repitition;
+        int firstmm;
+        int secondmm;
+        int baseindex;
+
         switch(compressioncode){
             case 0:
-                int repition = 1+binaryToDec(compressedbits,current_index+3,2);
+                repitition = 1+binaryToDec(compressedbits,current_index+3,2);
                 //deal with repitition.......
-                current_index = current_index + 10;
+                    for (int i=0;i<repitition;i++){
+                        decompfile<<"repitition:"<<repitition;
+                        decompfile<<'\n';
+                    }
+                current_index = current_index + 5;
                 break;
 
             case 1:
                 //masking
-                int firstmm = binaryToDec(compressedbits,current_index+3,5);
-                int baseindex = binaryToDec(compressedbits,current_index+13,3);
+                firstmm = binaryToDec(compressedbits,current_index+3,5);
+                baseindex = binaryToDec(compressedbits,current_index+8,3);
                 //apply bitmask.......
+                decompfile<<"bitmasked decompression";
                 current_index = current_index + 15;
+                decompfile<<'\n';
                 break;
 
             case 2:
                 //1 bit MM 
-                int firstmm = binaryToDec(compressedbits,current_index+3,5);
-                int baseindex = binaryToDec(compressedbits,current_index+13,3);
+                firstmm = binaryToDec(compressedbits,current_index+3,5);
+                baseindex = binaryToDec(compressedbits,current_index+8,3);
                 for(int i=0;i<32;i++){
                     if (i==firstmm){decompfile<< (basisvector_2d[baseindex][i] + 1)%2;justdecoded.push_back((basisvector_2d[baseindex][i] + 1)%2);} //flip bit
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
+                }
                 current_index = current_index + 11;
+                decompfile<<'\n';
                 break;
 
             case 3:
                 //2 bit MM consec
-                int firstmm = binaryToDec(compressedbits,current_index+3,5);
-                int baseindex = binaryToDec(compressedbits,current_index+13,3);
+                firstmm = binaryToDec(compressedbits,current_index+3,5);
+                baseindex = binaryToDec(compressedbits,current_index+8,3);
                 for(int i=0;i<32;i++){
                     if ((i==firstmm) || (i==firstmm+1)){decompfile<< (basisvector_2d[baseindex][i] + 1)%2;justdecoded.push_back((basisvector_2d[baseindex][i] + 1)%2);} //flip bit
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 }
                 current_index = current_index + 11;
+                decompfile<<'\n';
                 break;
 
             case 4:
                 //2 bit MM far
-                int firstmm = binaryToDec(compressedbits,current_index+3,5);
-                int secondmm = binaryToDec(compressedbits,current_index+8,5);
-                int baseindex = binaryToDec(compressedbits,current_index+13,3);
+                firstmm = binaryToDec(compressedbits,current_index+3,5);
+                secondmm = binaryToDec(compressedbits,current_index+8,5);
+                baseindex = binaryToDec(compressedbits,current_index+13,3);
                 for(int i=0;i<32;i++){
                     if ((i==firstmm) || (i==secondmm)){decompfile<< (basisvector_2d[baseindex][i] + 1)%2;
                     justdecoded.push_back((basisvector_2d[baseindex][i] + 1)%2);}
@@ -129,31 +144,37 @@ int main(){
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 }
                 current_index = current_index + 16;
+                decompfile<<'\n';
                 break;
 
             case 5:
                 //Directmatching
-                int baseindex = binaryToDec(compressedbits,current_index+3,3);
+                baseindex = binaryToDec(compressedbits,current_index+3,3);
                 for(int i=0;i<32;i++){decompfile<<basisvector_2d[baseindex][i]; justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 current_index = current_index + 6;
+                decompfile<<'\n';
                 break;
 
             case 6:
                 //Original Binary
                 for(int i=0;i<32;i++){decompfile<<compressedbits[current_index+3+i];justdecoded.push_back(compressedbits[current_index+3+i]);}
                 current_index = current_index + 35;
+                decompfile<<'\n';
                 break;
 
             case 7:
                 //a set of ones..end
                 current_index = current_index+ 40;
+                decompfile<<'\n';
                 break;
         }
 
-        decompfile<<'\n';
+        
     }
     // tests
     // std::cout<< binaryToDec(basisvector_2d[4],1,3);
 
+    decompfile.close();
     return 0;
-    }
+    
+}
