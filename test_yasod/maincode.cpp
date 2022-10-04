@@ -177,8 +177,6 @@ while (!stringque.empty()){
 int N_strings = datastrings.size();
 // int N_strings = 80;
 
-
-
 std::vector<std::vector<int>> datavector_2d(N_strings, std::vector<int> (32, 0));
 for (int i = 0; i<N_strings; i++){
     datavector_2d[i] = StrToIntVec(datastrings[i]);
@@ -186,10 +184,21 @@ for (int i = 0; i<N_strings; i++){
 
 //copy diction strings to a vector of vector<int>, intialised into vectors of zeros
 std::vector<std::vector<int>> basisvector_2d(8, std::vector<int> (32, 0));
-std::vector<std::pair<std::string, size_t>> basis_dic = topKFrequent(datastrings, 8);
+std::vector<std::pair<std::string, size_t>> basis_dic = topKFrequent(datastrings, 16);
+
+//check and fix changes in priority for same frequency
+for (int step=0;step<16;step++){
+    for(int j=0;j<15;j++){
+        if ( (basis_dic[j].second == basis_dic[j+1].second) &&
+            (FirstOccurence(datastrings,basis_dic[j].first,N_strings) > FirstOccurence(datastrings,basis_dic[j+1].first,N_strings)) ){
+                iter_swap(basis_dic.begin() + j, basis_dic.begin() + j+1);
+            }
+        
+    }
+}
 
 for (int i = 0; i<8; i++){
-    std::cout << basis_dic[i].first <<'_'<<basis_dic[i].second<<'\n';  
+    // std::cout << basis_dic[i].first <<'_'<<basis_dic[i].second<<'_'<<FirstOccurence(datastrings,basis_dic[i].first,N_strings)<<'\n'; 
     basisvector_2d[i] = StrToIntVec(basis_dic[i].first);
 }
 
