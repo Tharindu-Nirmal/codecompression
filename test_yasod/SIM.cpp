@@ -216,7 +216,6 @@ for (int step=0;step<16;step++){
             (FirstOccurence(datastrings,basis_dic[j].first,N_strings) > FirstOccurence(datastrings,basis_dic[j+1].first,N_strings)) ){
                 iter_swap(basis_dic.begin() + j, basis_dic.begin() + j+1);
             }
-        
     }
 }
 
@@ -304,7 +303,7 @@ while (next_index<N_strings){
 int lastlinexnum = 32- outbits.size()%32;
 for (int i=0;i<lastlinexnum;i++){outbits.push_back(1);}
 
-if( !(outbits.size()%32 ==0)){std::cout<<"error last line 1s"<<'\n';}
+// if( !(outbits.size()%32 ==0)){std::cout<<"error last line 1s"<<'\n';}
 
 //write output
 std::ofstream compressedout("cout.txt");
