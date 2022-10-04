@@ -205,12 +205,11 @@ int main(){
     std::string text;
     std::getline(inp, text);
     editstringque.push (text);
-    // std::cout << text;
+    std::cout << text<<'\n';
     }
 
-    // std::vector<std::string> doutstrings;
     int s = editstringque.size();
-    // std::cout << s;
+    std::cout << s;
 
     std::ofstream outp("dout.txt");
     for (int i=0;i<s-1;i++){

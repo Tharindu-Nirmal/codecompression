@@ -158,7 +158,7 @@ std::queue<std::string> stringque;
 while(!in.eof()){
 std::string text;
 std::getline(in, text);
-stringque.push (text); 
+if (text.size()!=0){stringque.push (text); }
 }
 
 //push the queue elemets to a vector<string>
