@@ -128,7 +128,7 @@ int main(){
                 }
                 
                 current_index = current_index + 15;
-                decompfile<<'\n';
+                if(current_index<numlines*32){decompfile<<'\n';}
                 break;
 
             case 2:
@@ -140,7 +140,7 @@ int main(){
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 }
                 current_index = current_index + 11;
-                decompfile<<'\n';
+                if(current_index<numlines*32){decompfile<<'\n';}
                 break;
 
             case 3:
@@ -152,7 +152,7 @@ int main(){
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 }
                 current_index = current_index + 11;
-                decompfile<<'\n';
+                if(current_index<numlines*32){decompfile<<'\n';}
                 break;
 
             case 4:
@@ -167,7 +167,7 @@ int main(){
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 }
                 current_index = current_index + 16;
-                decompfile<<'\n';
+                if(current_index<numlines*32){decompfile<<'\n';}
                 break;
 
             case 5:
@@ -175,29 +175,44 @@ int main(){
                 baseindex = binaryToDec(compressedbits,current_index+3,3);
                 for(int i=0;i<32;i++){decompfile<<basisvector_2d[baseindex][i]; justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 current_index = current_index + 6;
-                decompfile<<'\n';
+                if(current_index<numlines*32){decompfile<<'\n';}
                 break;
 
             case 6:
                 //Original Binary
                 for(int i=0;i<32;i++){decompfile<<compressedbits[current_index+3+i];justdecoded.push_back(compressedbits[current_index+3+i]);}
                 current_index = current_index + 35;
-                decompfile<<'\n';
+
+                //if not in lastline
+                if(current_index<numlines*32){decompfile<<'\n';}
                 break;
 
             case 7:
                 //a set of ones..end
                 current_index = current_index+ 40;
-                decompfile<<'\n';
+                // decompfile<<'\n';
                 break;
         }
 
         
     }
-    // tests
-    // std::cout<< binaryToDec(basisvector_2d[4],1,3);
-
     decompfile.close();
+
+    // std:: ifstream in("dout.txt");
+    // std:: 
+    // std::queue<std::string> stringque;
+    // while(!in.eof())
+    // {
+    // std::string text;
+        
+    // // extracting line from file.txt
+    // std::getline(in, text);
+    // stringque.push (text); 
+
+    // // printing the extracted lines
+    // std::cout << text << std::endl;
+    // }
+
     return 0;
     
 }
