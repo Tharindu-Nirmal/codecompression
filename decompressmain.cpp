@@ -128,7 +128,7 @@ int main(){
                 }
                 
                 current_index = current_index + 15;
-                if(current_index<numlines*32){decompfile<<'\n';}
+                decompfile<<'\n';
                 break;
 
             case 2:
@@ -140,7 +140,7 @@ int main(){
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 }
                 current_index = current_index + 11;
-                if(current_index<numlines*32){decompfile<<'\n';}
+                decompfile<<'\n';
                 break;
 
             case 3:
@@ -152,7 +152,7 @@ int main(){
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 }
                 current_index = current_index + 11;
-                if(current_index<numlines*32){decompfile<<'\n';}
+                decompfile<<'\n';
                 break;
 
             case 4:
@@ -167,7 +167,7 @@ int main(){
                     else{decompfile<<basisvector_2d[baseindex][i];justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 }
                 current_index = current_index + 16;
-                if(current_index<numlines*32){decompfile<<'\n';}
+                decompfile<<'\n';
                 break;
 
             case 5:
@@ -175,16 +175,14 @@ int main(){
                 baseindex = binaryToDec(compressedbits,current_index+3,3);
                 for(int i=0;i<32;i++){decompfile<<basisvector_2d[baseindex][i]; justdecoded.push_back(basisvector_2d[baseindex][i]);}
                 current_index = current_index + 6;
-                if(current_index<numlines*32){decompfile<<'\n';}
+                decompfile<<'\n';
                 break;
 
             case 6:
                 //Original Binary
                 for(int i=0;i<32;i++){decompfile<<compressedbits[current_index+3+i];justdecoded.push_back(compressedbits[current_index+3+i]);}
                 current_index = current_index + 35;
-
-                //if not in lastline
-                if(current_index<numlines*32){decompfile<<'\n';}
+                decompfile<<'\n';
                 break;
 
             case 7:
@@ -198,21 +196,28 @@ int main(){
     }
     decompfile.close();
 
-    // std:: ifstream in("dout.txt");
-    // std:: 
-    // std::queue<std::string> stringque;
-    // while(!in.eof())
-    // {
-    // std::string text;
-        
-    // // extracting line from file.txt
-    // std::getline(in, text);
-    // stringque.push (text); 
+    
 
-    // // printing the extracted lines
-    // std::cout << text << std::endl;
-    // }
+    // Input file stream object
+    std::ifstream inp("dout.txt");
+    std::queue<std::string> editstringque;
+    while(!inp.eof()){
+    std::string text;
+    std::getline(inp, text);
+    editstringque.push (text);
+    // std::cout << text;
+    }
 
+    // std::vector<std::string> doutstrings;
+    int s = editstringque.size();
+    // std::cout << s;
+
+    std::ofstream outp("dout.txt");
+    for (int i=0;i<s-1;i++){
+        if (i!=(s-2)){outp<<editstringque.front()<<'\n';}
+        else{outp<<editstringque.front();}
+        editstringque.pop();
+    }
     return 0;
     
 }

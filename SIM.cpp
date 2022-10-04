@@ -452,6 +452,26 @@ return 0;
     // std::cout<< binaryToDec(basisvector_2d[4],1,3);
 
     decompfile.close();
+    // Input file stream object
+    std::ifstream inp("dout.txt");
+    std::queue<std::string> editstringque;
+    while(!inp.eof()){
+    std::string text;
+    std::getline(inp, text);
+    editstringque.push (text);
+    // std::cout << text;
+    }
+
+    // std::vector<std::string> doutstrings;
+    int s = editstringque.size();
+    // std::cout << s;
+
+    std::ofstream outp("dout.txt");
+    for (int i=0;i<s-1;i++){
+        if (i!=(s-2)){outp<<editstringque.front()<<'\n';}
+        else{outp<<editstringque.front();}
+        editstringque.pop();
+    }
     return 0;
         
     }
