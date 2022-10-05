@@ -230,7 +230,7 @@ std:: vector<int> outbits;
 int next_index = 0;
 while (next_index<N_strings){
     int repitition = 0;
-    while(datavector_2d[next_index+repitition]==datavector_2d[next_index+repitition+1]){repitition++;}
+    while((datavector_2d[next_index+repitition]==datavector_2d[next_index+repitition+1])&&(repitition<4)){repitition++;}
 
     int selectedbase = 0;
     int bitcost = 40;
