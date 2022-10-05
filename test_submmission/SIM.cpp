@@ -51,19 +51,18 @@ auto decToBinary(int n, int bitsize){
     return result;
 }
 
-//syntax for using partial_sort_copy method for sorting according to a selecting function
-//define function to be frequency
-//https://stackoverflow.com/questions/66168461finding-the-top-k-frequent-elements
+//syntax for using partial_sort_copy in <algorithm> for sorting with a criteria function
+//define the criteria function to be frequency (count)
+//Ref: https://stackoverflow.com/questions/66168461finding-the-top-k-frequent-elements
 //But partial_sort_copy is an unstable sort, not preserving original order. 
-//Need to handle when declaring the dictionary
+//Need to handle when declaring the dictionary with a check on original order.
 
 auto GetUnstableSort(std::vector<std::string>& numstrings, size_t k) {
     std::unordered_map<std::string, size_t> counter_map{};
-    for (const std::string& i : numstrings) counter_map[i]++;
+    for (const std::string& i : numstrings){counter_map[i]++;}
     std::vector<std::pair<std::string, size_t>> top(k);
     std::partial_sort_copy(counter_map.begin(), counter_map.end(), top.begin(), top.end(),
         [](const std::pair<std::string, size_t >& part1, const std::pair<std::string, size_t>& part2) { return part1.second > part2.second; });
-
     return top;
 }
 
@@ -138,9 +137,7 @@ std::vector<int> GetCompressionInfo(std::vector<int> data_vec, std::vector<int> 
                 result[1] =4;
                 result[2] =changes_vec[0];//ML1
                 result[3] =changes_vec[1];//ML2
-        }
-
-        
+        }        
     }
 
     else{
