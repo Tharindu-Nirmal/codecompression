@@ -57,7 +57,7 @@ auto decToBinary(int n, int bitsize){
 //But partial_sort_copy is an unstable sort, not preserving original order. 
 //Need to handle when declaring the dictionary
 
-auto topKFrequent(std::vector<std::string>& numstrings, size_t k) {
+auto GetUnstableSort(std::vector<std::string>& numstrings, size_t k) {
     std::unordered_map<std::string, size_t> counter_map{};
     for (const std::string& i : numstrings) counter_map[i]++;
     std::vector<std::pair<std::string, size_t>> top(k);
@@ -210,7 +210,7 @@ for (int i = 0; i<N_strings; i++){
 
 //copy diction strings to a vector of vector<int>, intialised into vectors of zeros
 std::vector<std::vector<int>> basisvector_2d(8, std::vector<int> (32, 0));
-std::vector<std::pair<std::string, size_t>> basis_dic = topKFrequent(datastrings, N_strings);
+std::vector<std::pair<std::string, size_t>> basis_dic = GetUnstableSort(datastrings, N_strings);
 
 //check and fix changes in priority for same frequency using Bubble sort
 for (int step=0;step<N_strings;step++){
